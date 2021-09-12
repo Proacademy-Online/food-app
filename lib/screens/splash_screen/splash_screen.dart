@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/screens/splash_screen/getting_started.dart';
+import 'package:food_app/utils/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -13,8 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const GettingStarted()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const GettingStarted()));
     });
   }
 
@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/food.png'),
+            Image.asset(Constants.imageAsset('food.png')),
             const SizedBox(height: 8),
             const Text(
               "No waiting for food",

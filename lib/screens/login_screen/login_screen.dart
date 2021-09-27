@@ -1,10 +1,14 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_button.dart';
+import 'package:food_app/components/custom_dialogbox.dart';
 import 'package:food_app/components/custom_header.dart';
 import 'package:food_app/components/custom_textfeild.dart';
+import 'package:food_app/controllers/auth_controller.dart';
 import 'package:food_app/screens/login_screen/register_screen.dart';
 import 'package:food_app/utils/app_colors.dart';
 import 'package:food_app/utils/constants.dart';
@@ -22,6 +26,8 @@ class _LoginPageState extends State<LoginPage> {
   var _isObscure = true;
   final _email = TextEditingController();
   final _password = TextEditingController();
+
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +151,22 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(height: 35),
                             CustomButton(
                               text: "Sign In",
-                              onTap: () {},
+                              onTap: () async {
+                                if (inputValidation()) {
+                                  AuthController().loginUser(
+                                    context,
+                                    _email.text,
+                                    _password.text,
+                                  );
+                                } else {
+                                  DialogBox().dialogBox(
+                                    context,
+                                    DialogType.ERROR,
+                                    'Incorrect information.',
+                                    'Please enter correct information',
+                                  );
+                                }
+                              },
                             ),
                             const SizedBox(height: 20),
                             Center(

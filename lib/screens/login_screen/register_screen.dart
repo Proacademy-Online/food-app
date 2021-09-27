@@ -1,9 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/components/custom_button.dart';
+import 'package:food_app/components/custom_header.dart';
 import 'package:food_app/components/custom_textfeild.dart';
-import 'package:food_app/utils/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -18,6 +21,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final _password = TextEditingController();
   final _name = TextEditingController();
   final _phone = TextEditingController();
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -29,40 +35,11 @@ class _RegisterPageState extends State<RegisterPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Stack(
-                  children: [
-                    Image.asset(
-                      Constants.imageAsset('top.png'),
-                      width: size.width,
-                      fit: BoxFit.fitWidth,
-                    ),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            height: 80,
-                          ),
-                          Text(
-                            "Register",
-                            style: GoogleFonts.poppins(
-                              fontSize: 22,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            "Create Acount",
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+                CustomHeader(
+                  size: size,
+                  header: "Register",
+                  tagline: "Create Acount",
+                  image: "top.png",
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -142,32 +119,51 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         const SizedBox(height: 35),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (inputValidation()) {
-                                print('success');
-                              } else {
-                                print('errrorrrrrr');
+                        CustomButton(
+                          text: "Register",
+                          onTap: () async {
+                            if (inputValidation()) {
+                              try {
+                                UserCredential userCredential =
+                                    await FirebaseAuth.instance
+                                        .createUserWithEmailAndPassword(
+                                            email: _email.text,
+                                            password: _password.text);
+                              } on FirebaseAuthException catch (e) {
+                                if (e.code == 'weak-password') {
+                                  AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.ERROR,
+                                    animType: AnimType.BOTTOMSLIDE,
+                                    title: 'The password provided is too weak.',
+                                    btnCancelOnPress: () {},
+                                    btnOkOnPress: () {},
+                                  ).show();
+                                } else if (e.code == 'email-already-in-use') {
+                                  AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.ERROR,
+                                    animType: AnimType.BOTTOMSLIDE,
+                                    title:
+                                        'The account already exists for that email.',
+                                    btnCancelOnPress: () {},
+                                    btnOkOnPress: () {},
+                                  ).show();
+                                }
+                              } catch (e) {
+                                print(e);
                               }
-                            },
-                            child: Text(
-                              'Register',
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                minimumSize: const Size(double.infinity, 15),
-                                primary: const Color(0xffFFD200),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                )),
-                          ),
+                            } else {
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.ERROR,
+                                animType: AnimType.BOTTOMSLIDE,
+                                title: 'Please enter correct information',
+                                btnCancelOnPress: () {},
+                                btnOkOnPress: () {},
+                              ).show();
+                            }
+                          },
                         ),
                       ],
                     ),
@@ -189,8 +185,6 @@ class _RegisterPageState extends State<RegisterPage> {
         _password.text.isEmpty) {
       isValid = false;
     } else if (!EmailValidator.validate(_email.text)) {
-      isValid = false;
-    } else if (_phone.text.length != 10) {
       isValid = false;
     } else {
       isValid = true;

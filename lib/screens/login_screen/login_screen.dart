@@ -2,8 +2,11 @@ import 'package:animate_do/animate_do.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/components/custom_button.dart';
+import 'package:food_app/components/custom_header.dart';
 import 'package:food_app/components/custom_textfeild.dart';
 import 'package:food_app/screens/login_screen/register_screen.dart';
+import 'package:food_app/utils/app_colors.dart';
 import 'package:food_app/utils/constants.dart';
 import 'package:food_app/utils/util_functions.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,40 +34,11 @@ class _LoginPageState extends State<LoginPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Stack(
-                  children: [
-                    Image.asset(
-                      Constants.imageAsset('top.png'),
-                      width: size.width,
-                      fit: BoxFit.fitWidth,
-                    ),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            height: 80,
-                          ),
-                          Text(
-                            "Login",
-                            style: GoogleFonts.poppins(
-                              fontSize: 22,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            "Access Acount",
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+                CustomHeader(
+                  size: size,
+                  header: "Login",
+                  tagline: "Access Acount",
+                  image: "top.png",
                 ),
                 const SizedBox(height: 20),
                 SingleChildScrollView(
@@ -101,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: Image.asset(
                               Constants.imageAsset('facebook.png'),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 15),
@@ -169,25 +143,9 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             const SizedBox(height: 35),
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                child: Text(
-                                  'Sign In',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 150, vertical: 15),
-                                    primary: const Color(0xffFFD200),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    )),
-                              ),
+                            CustomButton(
+                              text: "Sign In",
+                              onTap: () {},
                             ),
                             const SizedBox(height: 20),
                             Center(

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "695849841411",
+    "project_id": "food-app-83b6e",
+    "storage_bucket": "food-app-83b6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695849841411:android:d1445618dc378f1592ef36",
+        "android_client_info": {
+          "package_name": "com.proacademy.food_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "695849841411-7va1t9rq7orj8j61h6mrg9tqb9sjfbth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_8py_-jhgIW6GafMjyX--gal33jvh070"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "695849841411-7va1t9rq7orj8j61h6mrg9tqb9sjfbth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

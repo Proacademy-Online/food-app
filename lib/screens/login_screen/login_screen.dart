@@ -4,7 +4,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_app/components/custom_button.dart';
 import 'package:food_app/components/custom_dialogbox.dart';
 import 'package:food_app/components/custom_header.dart';
@@ -13,7 +12,6 @@ import 'package:food_app/components/custom_textfeild.dart';
 import 'package:food_app/controllers/auth_controller.dart';
 import 'package:food_app/screens/login_screen/forgot_password_screen.dart';
 import 'package:food_app/screens/login_screen/register_screen.dart';
-import 'package:food_app/screens/splash_screen/getting_started.dart';
 import 'package:food_app/utils/constants.dart';
 import 'package:food_app/utils/util_functions.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -98,8 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -137,18 +134,12 @@ class _LoginPageState extends State<LoginPage> {
                                         _isObscure = !_isObscure;
                                       });
                                     },
-                                    icon: Icon(_isObscure
-                                        ? Icons.visibility
-                                        : Icons.visibility_off),
+                                    icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: Colors.white)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide:
-                                          const BorderSide(color: Colors.red)),
+                                  enabledBorder:
+                                      OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.white)),
+                                  focusedBorder:
+                                      OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.red)),
                                 ),
                               ),
                             ),
@@ -197,8 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                                     text: "Register",
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        UtilFunctions.navigateTo(
-                                            context, const RegisterPage());
+                                        UtilFunctions.navigateTo(context, const RegisterPage());
                                       },
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -217,8 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(fontSize: 16),
                               )),
                               onTap: () {
-                                UtilFunctions.navigateTo(
-                                    context, const ForgotPasswordPage());
+                                UtilFunctions.navigateTo(context, const ForgotPasswordPage());
                               },
                             ),
                           ],

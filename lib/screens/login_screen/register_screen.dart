@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_button.dart';
 import 'package:food_app/components/custom_dialogbox.dart';
 import 'package:food_app/components/custom_header.dart';
+import 'package:food_app/components/custom_loader.dart';
 import 'package:food_app/components/custom_textfeild.dart';
 import 'package:food_app/controllers/auth_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,6 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _phone = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -121,27 +123,37 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         const SizedBox(height: 35),
-                        CustomButton(
-                          text: "Register",
-                          onTap: () async {
-                            if (inputValidation()) {
-                              await AuthController().registerUser(
-                                context,
-                                _email.text,
-                                _password.text,
-                                _name.text,
-                                _phone.text,
-                              );
-                            } else {
-                              DialogBox().dialogBox(
-                                context,
-                                DialogType.ERROR,
-                                'Incorrect information.',
-                                'Please enter correct information',
-                              );
-                            }
-                          },
-                        ),
+                        isLoading
+                            ? const CustomLoader()
+                            : CustomButton(
+                                text: "Register",
+                                onTap: () async {
+                                  if (inputValidation()) {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+
+                                    await AuthController().registerUser(
+                                      context,
+                                      _email.text,
+                                      _password.text,
+                                      _name.text,
+                                      _phone.text,
+                                    );
+
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  } else {
+                                    DialogBox().dialogBox(
+                                      context,
+                                      DialogType.ERROR,
+                                      'Incorrect information.',
+                                      'Please enter correct information',
+                                    );
+                                  }
+                                },
+                              ),
                       ],
                     ),
                   ),

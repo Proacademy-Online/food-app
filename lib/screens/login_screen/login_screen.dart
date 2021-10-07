@@ -4,13 +4,16 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_app/components/custom_button.dart';
 import 'package:food_app/components/custom_dialogbox.dart';
 import 'package:food_app/components/custom_header.dart';
+import 'package:food_app/components/custom_loader.dart';
 import 'package:food_app/components/custom_textfeild.dart';
 import 'package:food_app/controllers/auth_controller.dart';
+import 'package:food_app/screens/login_screen/forgot_password_screen.dart';
 import 'package:food_app/screens/login_screen/register_screen.dart';
-import 'package:food_app/utils/app_colors.dart';
+import 'package:food_app/screens/splash_screen/getting_started.dart';
 import 'package:food_app/utils/constants.dart';
 import 'package:food_app/utils/util_functions.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   final _password = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -149,25 +153,35 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             const SizedBox(height: 35),
-                            CustomButton(
-                              text: "Sign In",
-                              onTap: () async {
-                                if (inputValidation()) {
-                                  AuthController().loginUser(
-                                    context,
-                                    _email.text,
-                                    _password.text,
-                                  );
-                                } else {
-                                  DialogBox().dialogBox(
-                                    context,
-                                    DialogType.ERROR,
-                                    'Incorrect information.',
-                                    'Please enter correct information',
-                                  );
-                                }
-                              },
-                            ),
+                            isLoading
+                                ? const CustomLoader()
+                                : CustomButton(
+                                    text: "Sign In",
+                                    onTap: () async {
+                                      if (inputValidation()) {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+
+                                        AuthController().loginUser(
+                                          context,
+                                          _email.text,
+                                          _password.text,
+                                        );
+
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                      } else {
+                                        DialogBox().dialogBox(
+                                          context,
+                                          DialogType.ERROR,
+                                          'Incorrect information.',
+                                          'Please enter correct information',
+                                        );
+                                      }
+                                    },
+                                  ),
                             const SizedBox(height: 20),
                             Center(
                               child: RichText(
@@ -194,7 +208,19 @@ class _LoginPageState extends State<LoginPage> {
                                   )
                                 ]),
                               ),
-                            )
+                            ),
+                            const SizedBox(height: 10),
+                            GestureDetector(
+                              child: const Center(
+                                  child: Text(
+                                'Forgot Password?',
+                                style: TextStyle(fontSize: 16),
+                              )),
+                              onTap: () {
+                                UtilFunctions.navigateTo(
+                                    context, const ForgotPasswordPage());
+                              },
+                            ),
                           ],
                         ),
                       )

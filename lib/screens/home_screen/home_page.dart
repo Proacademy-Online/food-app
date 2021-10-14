@@ -16,16 +16,17 @@ class HomePage extends StatelessWidget {
             size: size,
             image: "top.png",
             widget: Padding(
-              padding: EdgeInsets.only(left: 30, right: 30, top: 66),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 66),
               child: CustomTextfeild(
+                hintText: 'Find your taste',
                 preffix: Icon(
                   Icons.search,
                   color: greyColor,
                 ),
-                hintText: 'Find your taste',
               ),
             ),
           ),
+          
         ],
       ),
     );

@@ -8,6 +8,7 @@ import 'package:food_app/components/custom_button.dart';
 import 'package:food_app/components/custom_dialogbox.dart';
 import 'package:food_app/components/custom_header.dart';
 import 'package:food_app/components/custom_loader.dart';
+import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/components/custom_textfeild.dart';
 import 'package:food_app/controllers/auth_controller.dart';
 import 'package:food_app/screens/login_screen/forgot_password_screen.dart';
@@ -111,13 +112,10 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(height: 6),
                             CustomTextfeild(controller: _email),
                             const SizedBox(height: 14),
-                            Text(
-                              'Password',
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
+                            CustomText(
+                              text: 'Password',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
                             ),
                             const SizedBox(height: 6),
                             SizedBox(

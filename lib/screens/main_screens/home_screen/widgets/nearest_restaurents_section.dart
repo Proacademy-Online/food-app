@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_images.dart';
 import 'package:food_app/components/custom_text.dart';
+import 'package:food_app/components/image_tile.dart';
+import 'package:food_app/screens/main_screens/restaurent_details_screen/restaurent_details_screen.dart';
 import 'package:food_app/utils/app_colors.dart';
+import 'package:food_app/utils/util_functions.dart';
 
 class NearestRestaurentsSection extends StatelessWidget {
   const NearestRestaurentsSection({
@@ -40,64 +43,52 @@ class RestaurentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 120,
-          height: 120,
-          margin: const EdgeInsets.only(right: 20),
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: const CustomNetworkImage(
-                  url:
-                      'https://www.kitchensanctuary.com/wp-content/uploads/2020/12/Quick-Chicken-Ramen-square-FS-22.jpg',
-                ),
-              ),
-              isOffer ? const OfferTag() : Container()
-            ],
+    return InkWell(
+      onTap: () =>
+          UtilFunctions.navigateTo(context, const RestaurentDeailsScreen()),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ImageTile(isOffer: isOffer),
+          const SizedBox(height: 5),
+          const CustomText(
+            text: 'Westway',
+            fontSize: 16,
           ),
-        ),
-        const SizedBox(height: 5),
-        const CustomText(
-          text: 'Westway',
-          fontSize: 16,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: const [
-                Icon(
-                  Icons.star,
-                  color: primaryColor,
-                  size: 15,
-                ),
-                CustomText(
-                  text: '4.6  • ',
-                  fontSize: 12,
-                )
-              ],
-            ),
-            Row(
-              children: const [
-                Icon(
-                  Icons.timer,
-                  color: greyColor,
-                  size: 15,
-                ),
-                SizedBox(width: 3),
-                CustomText(
-                  text: '15 min',
-                  fontSize: 12,
-                )
-              ],
-            ),
-          ],
-        )
-      ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: const [
+                  Icon(
+                    Icons.star,
+                    color: primaryColor,
+                    size: 15,
+                  ),
+                  CustomText(
+                    text: '4.6  • ',
+                    fontSize: 12,
+                  )
+                ],
+              ),
+              Row(
+                children: const [
+                  Icon(
+                    Icons.timer,
+                    color: greyColor,
+                    size: 15,
+                  ),
+                  SizedBox(width: 3),
+                  CustomText(
+                    text: '15 min',
+                    fontSize: 12,
+                  )
+                ],
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

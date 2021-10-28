@@ -3,9 +3,11 @@ import 'package:food_app/components/app_bar_button.dart';
 import 'package:food_app/components/custom_images.dart';
 import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/components/custom_title.dart';
-import 'package:food_app/components/image_tile.dart';
 import 'package:food_app/components/product_card.dart';
+import 'package:food_app/screens/main_screens/restaurant_menu/restaurant_menu.dart';
+import 'package:food_app/screens/main_screens/restaurent_details_screen/restaurant_category_section.dart';
 import 'package:food_app/utils/app_colors.dart';
+import 'package:food_app/utils/util_functions.dart';
 
 class RestaurentDeailsScreen extends StatefulWidget {
   const RestaurentDeailsScreen({Key? key}) : super(key: key);
@@ -19,7 +21,7 @@ class _RestaurentDeailsScreenState extends State<RestaurentDeailsScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: size.height,
         child: Column(
           children: [
@@ -35,6 +37,22 @@ class _RestaurentDeailsScreenState extends State<RestaurentDeailsScreen> {
                   const CustomTitle(text: 'Best Products'),
                   const SizedBox(height: 20),
                   const ProductListSection(),
+                  GestureDetector(
+                    onTap: () {
+                      UtilFunctions.navigateTo(context, const RestaurantMenu());
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.only(right: 40, bottom: 10, top: 10),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: CustomText(
+                          text: 'See our menu',
+                          color: korange,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -54,57 +72,14 @@ class ProductListSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.separated(
-        padding: EdgeInsets.only(bottom: 20, top: 5),
-        physics: BouncingScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: 20, top: 5),
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          return ProductCard();
+          return const ProductCard();
         },
-        separatorBuilder: (context, index) => Divider(),
+        separatorBuilder: (context, index) => const Divider(),
         itemCount: 3,
       ),
-    );
-  }
-}
-
-class ResCategorySection extends StatelessWidget {
-  const ResCategorySection({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomTitle(text: 'Westway Food Menu'),
-        SizedBox(height: 16),
-        Container(
-          padding: EdgeInsets.only(left: 30),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: BouncingScrollPhysics(),
-            child: Row(
-              children: [
-                ResCategoryTile(
-                  categoryName: 'All',
-                ),
-                ResCategoryTile(
-                  categoryName: 'Pizza',
-                ),
-                ResCategoryTile(
-                  categoryName: 'Beverages',
-                ),
-                ResCategoryTile(
-                  categoryName: 'Asian',
-                ),
-                ResCategoryTile(
-                  categoryName: 'All',
-                ),
-              ],
-            ),
-          ),
-        )
-      ],
     );
   }
 }
@@ -138,7 +113,7 @@ class _ResCategoryTileState extends State<ResCategoryTile> {
             Container(
               // width: 65,
               height: 35,
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: isSelected ? korange : kwhite,
@@ -174,7 +149,7 @@ class RestaurentDetailsSection extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(
+                  const CustomText(
                     text: 'Westway',
                     fontSize: 30,
                     fontWeight: FontWeight.w500,
@@ -214,15 +189,15 @@ class RestaurentDetailsSection extends StatelessWidget {
                   )
                 ],
               ),
-              CustomText(
+              const CustomText(
                 text: 'More info',
                 fontSize: 14,
                 color: korange,
               ),
             ],
           ),
-          SizedBox(height: 10),
-          CustomText(
+          const SizedBox(height: 10),
+          const CustomText(
             text:
                 'Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.',
             fontSize: 15,
@@ -245,14 +220,14 @@ class UpperSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 300,
       child: Stack(
         children: [
-          Container(
+          SizedBox(
             width: size.width,
             height: 320,
-            child: ClipRRect(
+            child: const ClipRRect(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(65),
                 bottomRight: Radius.circular(65),
@@ -274,7 +249,7 @@ class UpperSection extends StatelessWidget {
                   Row(
                     children: [
                       AppBarButton(iconName: 'heart', ontap: () {}),
-                      SizedBox(width: 16),
+                      const SizedBox(width: 16),
                       AppBarButton(iconName: 'feather_share', ontap: () {}),
                     ],
                   ),

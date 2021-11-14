@@ -1,6 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/screens/main_screens/cart_screen/cart_screen.dart';
+import 'package:food_app/screens/splash_screen/splash_screen.dart';
+
+import 'screens/main_screens/tracking_screen/tracking_screen.dart';
+import 'screens/sample_map.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const CartScreen(),
+      home: const SplashScreen(),
     );
   }
 }

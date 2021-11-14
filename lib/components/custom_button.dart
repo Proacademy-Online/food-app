@@ -7,18 +7,22 @@ class CustomButton extends StatelessWidget {
     Key? key,
     required this.onTap,
     required this.text,
+    this.height = 60,
+    this.width = double.infinity,
   }) : super(key: key);
 
   final Function() onTap;
   final String text;
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 60,
-        width: double.infinity,
+        height: height,
+        width: width,
         decoration: BoxDecoration(
           color: primaryColor,
           borderRadius: BorderRadius.circular(15),
@@ -27,7 +31,7 @@ class CustomButton extends StatelessWidget {
           child: Text(
             text,
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: 17,
               color: Colors.black,
               fontWeight: FontWeight.w600,
             ),

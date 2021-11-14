@@ -3,6 +3,7 @@ import 'package:food_app/components/image_tile.dart';
 import 'package:food_app/utils/app_colors.dart';
 import 'package:food_app/utils/util_functions.dart';
 import 'custom_text.dart';
+import 'dialog_helper.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -52,21 +53,16 @@ class ProductCard extends StatelessWidget {
           GestureDetector(
             onTap: () {
               showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const CustomText(
-                          text: 'Succesfully Added to cart', fontSize: 18),
-                      content: const CustomText(text: 'Check out now'),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              UtilFunctions.goBack(context);
-                            },
-                            child: const CustomText(text: 'Ok')),
-                      ],
-                    );
-                  });
+                context: context,
+                builder: (BuildContext context) {
+                  return DialogHelper(
+                    iconName: 'shopping-cart 1',
+                    text1: 'Sucessfully \nadded to cart',
+                    btnName: 'Check out now',
+                    btnOntap: () {},
+                  );
+                },
+              );
             },
             child: const Icon(
               Icons.add,

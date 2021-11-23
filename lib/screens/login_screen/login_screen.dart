@@ -1,16 +1,10 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_button.dart';
-import 'package:food_app/components/custom_dialogbox.dart';
 import 'package:food_app/components/custom_header.dart';
-import 'package:food_app/components/custom_loader.dart';
 import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/components/custom_textfeild.dart';
-import 'package:food_app/controllers/auth_controller.dart';
 import 'package:food_app/providers/login_provider.dart';
 import 'package:food_app/screens/login_screen/forgot_password_screen.dart';
 import 'package:food_app/screens/login_screen/register_screen.dart';

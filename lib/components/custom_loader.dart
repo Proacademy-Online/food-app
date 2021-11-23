@@ -8,7 +8,7 @@ class CustomLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SpinKitRotatingPlain(
+    return const SpinKitDoubleBounce(
       color: Colors.amber,
       size: 40,
     );

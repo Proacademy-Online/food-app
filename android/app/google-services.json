@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "695849841411",
-    "project_id": "food-app-83b6e",
-    "storage_bucket": "food-app-83b6e.appspot.com"
+    "project_number": "599076159863",
+    "project_id": "food-delivery-332114",
+    "storage_bucket": "food-delivery-332114.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:695849841411:android:d1445618dc378f1592ef36",
+        "mobilesdk_app_id": "1:599076159863:android:802d896563666c42986172",
         "android_client_info": {
           "package_name": "com.proacademy.food_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "695849841411-7va1t9rq7orj8j61h6mrg9tqb9sjfbth.apps.googleusercontent.com",
+          "client_id": "599076159863-364lnmcb1ta3epcfg57eg9da31p2ulm4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD_8py_-jhgIW6GafMjyX--gal33jvh070"
+          "current_key": "AIzaSyDHQ-WipFmiSecCW7iL_ecnKQWJYHLxXw4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "695849841411-7va1t9rq7orj8j61h6mrg9tqb9sjfbth.apps.googleusercontent.com",
+              "client_id": "599076159863-364lnmcb1ta3epcfg57eg9da31p2ulm4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

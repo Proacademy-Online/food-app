@@ -1,9 +1,12 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_images.dart';
+import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/screens/main_screens/cart_screen/cart_screen.dart';
 import 'package:food_app/screens/main_screens/home_screen/home_page.dart';
 import 'package:food_app/screens/main_screens/profile_screen/profile_screen.dart';
 import 'package:food_app/utils/app_colors.dart';
+import 'package:logger/logger.dart';
 import 'search_screen/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -23,54 +26,81 @@ class _MainScreenState extends State<MainScreen> {
     ProfileScreen(),
   ];
 
+  Future<bool> initBackButton() async {
+    Logger().d('back button pressed');
+    return await showDialog(
+          context: context,
+          builder: (context) => ElasticIn(
+            child: AlertDialog(
+              title: const CustomText(text: 'Exit App'),
+              content: const CustomText(text: 'Do you really want to exit an App ?'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const CustomText(text: 'No'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const CustomText(text: 'Yes'),
+                ),
+              ],
+            ),
+          ),
+        ) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: mainBG,
-      body: _screens.elementAt(_currentIndex),
-      bottomNavigationBar: Container(
-        height: 90,
-        color: kwhite,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            BottomNavTile(
-              icon: 'home',
-              isSelected: _currentIndex == 0,
-              ontap: () {
-                setState(() {
-                  _currentIndex = 0;
-                });
-              },
-            ),
-            BottomNavTile(
-              icon: 'search',
-              isSelected: _currentIndex == 1,
-              ontap: () {
-                setState(() {
-                  _currentIndex = 1;
-                });
-              },
-            ),
-            BottomNavTile(
-              icon: 'cart',
-              isSelected: _currentIndex == 2,
-              ontap: () {
-                setState(() {
-                  _currentIndex = 2;
-                });
-              },
-            ),
-            BottomNavTile(
-              icon: 'profile',
-              isSelected: _currentIndex == 3,
-              ontap: () {
-                setState(() {
-                  _currentIndex = 3;
-                });
-              },
-            ),
-          ],
+    return WillPopScope(
+      onWillPop: initBackButton,
+      child: Scaffold(
+        backgroundColor: mainBG,
+        body: _screens.elementAt(_currentIndex),
+        bottomNavigationBar: Container(
+          height: 90,
+          color: kwhite,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              BottomNavTile(
+                icon: 'home',
+                isSelected: _currentIndex == 0,
+                ontap: () {
+                  setState(() {
+                    _currentIndex = 0;
+                  });
+                },
+              ),
+              BottomNavTile(
+                icon: 'search',
+                isSelected: _currentIndex == 1,
+                ontap: () {
+                  setState(() {
+                    _currentIndex = 1;
+                  });
+                },
+              ),
+              BottomNavTile(
+                icon: 'cart',
+                isSelected: _currentIndex == 2,
+                ontap: () {
+                  setState(() {
+                    _currentIndex = 2;
+                  });
+                },
+              ),
+              BottomNavTile(
+                icon: 'profile',
+                isSelected: _currentIndex == 3,
+                ontap: () {
+                  setState(() {
+                    _currentIndex = 3;
+                  });
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

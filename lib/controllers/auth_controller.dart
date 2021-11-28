@@ -19,15 +19,13 @@ class AuthController {
     String phone,
   ) async {
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
       if (userCredential.user!.uid.isNotEmpty) {
-        await DatabaseController()
-            .saveUserData(name, phone, email, userCredential.user!.uid);
+        await DatabaseController().saveUserData(name, phone, email, userCredential.user!.uid);
       }
 
       DialogBox().dialogBox(
@@ -64,12 +62,11 @@ class AuthController {
     String password,
   ) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
 
-      if (userCredential.user != null) {
-        UtilFunctions.navigateTo(context, const MainScreen());
-      }
+      // if (userCredential.user != null) {
+      //   UtilFunctions.pushRemoveNavigation(context, const MainScreen());
+      // }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         DialogBox().dialogBox(
@@ -90,8 +87,7 @@ class AuthController {
   }
 
   // Send password reset email function
-  Future<void>? sendPasswordResetEmail(
-      BuildContext context, String email) async {
+  Future<void>? sendPasswordResetEmail(BuildContext context, String email) async {
     try {
       await auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {

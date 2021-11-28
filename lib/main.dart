@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/providers/auth/registration_provider.dart';
+import 'package:food_app/providers/auth/user_provider.dart';
 import 'package:food_app/providers/counter_provider.dart';
-import 'package:food_app/providers/login_provider.dart';
+import 'package:food_app/providers/auth/login_provider.dart';
 import 'package:food_app/screens/main_screens/cart_screen/cart_screen.dart';
 import 'package:food_app/screens/main_screens/main_screen.dart';
 import 'package:food_app/screens/splash_screen/splash_screen.dart';
@@ -19,6 +21,8 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => CounterProvider()),
         ChangeNotifierProvider(create: (context) => LoginProvider()),
+        ChangeNotifierProvider(create: (context) => RegistrationProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
       ],
       child: const MyApp(),
     ),

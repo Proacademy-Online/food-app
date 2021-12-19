@@ -22,7 +22,7 @@ class UserProvider extends ChangeNotifier {
   final AddressModel _addressModel = AddressModel(addressString: "", latitude: 0, longitude: 0);
 
   //get address string
-  String get address => _addressModel.addressString != "" ? _addressModel.addressString : "select your location";
+  String get address => _userModel.address != null ? _userModel.address!.addressString : "select your location";
 
   //initialize and check whther the user signed in or not
   void initializeUser(BuildContext context) {
@@ -53,6 +53,13 @@ class UserProvider extends ChangeNotifier {
     _addressModel.addressString = result.formattedAddress!;
     _addressModel.latitude = result.geometry!.location.lat;
     _addressModel.longitude = result.geometry!.location.lng;
+
+    //adding the adress to the existing usermodel
+    _userModel.address = _addressModel;
+
+    Logger().w(_addressModel.toJson());
+
+    _databaseController.updateAddress(_userModel);
 
     notifyListeners();
   }

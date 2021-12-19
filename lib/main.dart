@@ -4,6 +4,8 @@ import 'package:food_app/providers/auth/registration_provider.dart';
 import 'package:food_app/providers/auth/user_provider.dart';
 import 'package:food_app/providers/counter_provider.dart';
 import 'package:food_app/providers/auth/login_provider.dart';
+import 'package:food_app/providers/home/category_provider.dart';
+import 'package:food_app/providers/home/restaurent_provider.dart';
 import 'package:food_app/screens/splash_screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -18,6 +20,8 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => LoginProvider()),
         ChangeNotifierProvider(create: (context) => RegistrationProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => CategoryProvider()),
+        ChangeNotifierProvider(create: (context) => RestaurentProvider()),
       ],
       child: const MyApp(),
     ),

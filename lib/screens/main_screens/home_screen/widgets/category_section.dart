@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_images.dart';
 import 'package:food_app/components/custom_text.dart';
+import 'package:food_app/providers/home/category_provider.dart';
 import 'package:food_app/utils/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class CategorySection extends StatelessWidget {
   const CategorySection({
@@ -15,29 +17,18 @@ class CategorySection extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
-        child: Row(
-          children: const [
-            CategoryTile(
-              svgName: 'food',
-              categoryName: 'All',
-            ),
-            CategoryTile(
-              svgName: 'ion_pizza-outline',
-              categoryName: 'Pizza',
-            ),
-            CategoryTile(
-              svgName: 'bx_bx-drink',
-              categoryName: 'Beverages',
-            ),
-            CategoryTile(
-              svgName: 'fe_rice-cracker',
-              categoryName: 'Asian',
-            ),
-            CategoryTile(
-              svgName: 'food',
-              categoryName: 'All',
-            ),
-          ],
+        child: Consumer<CategoryProvider>(
+          builder: (context, value, child) {
+            return Row(
+              children: [
+                for (var i = 0; i < value.catList.length; i++)
+                  CategoryTile(
+                    svgName: value.catList[i].svgName,
+                    categoryName: value.catList[i].categoryName,
+                  ),
+              ],
+            );
+          },
         ),
       ),
     );

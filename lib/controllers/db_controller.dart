@@ -23,9 +23,25 @@ class DatabaseController {
           'email': email,
           'phone': phone,
           'uid': uid,
+          'address': null,
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
+  }
+
+  //update user selected address
+  Future<void> updateAddress(UserModel user) async {
+    return users
+        .doc(user.uid)
+        .set({
+          'name': user.name,
+          'email': user.email,
+          'phone': user.phoneNo,
+          'uid': user.uid,
+          'address': user.address!.toJson(),
+        })
+        .then((value) => Logger().i("User updated"))
+        .catchError((error) => Logger().e("Failed to update user: $error"));
   }
 
   //get user data

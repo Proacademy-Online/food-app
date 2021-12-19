@@ -10,6 +10,7 @@ class CustomText extends StatelessWidget {
     this.color = primaryTxtColor,
     this.fontWeight,
     this.textAlign,
+    this.textOverflow = TextOverflow.ellipsis,
   }) : super(key: key);
 
   final String text;
@@ -17,11 +18,14 @@ class CustomText extends StatelessWidget {
   final Color color;
   final FontWeight? fontWeight;
   final TextAlign? textAlign;
+  final TextOverflow textOverflow;
+
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
       textAlign: textAlign,
+      overflow: textOverflow,
       style: GoogleFonts.poppins(
         fontSize: fontSize,
         color: color,

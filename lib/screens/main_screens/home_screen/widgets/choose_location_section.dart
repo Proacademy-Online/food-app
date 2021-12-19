@@ -15,6 +15,7 @@ class ChooseLocationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Consumer<UserProvider>(
       builder: (context, value, child) {
         return Container(
@@ -30,9 +31,13 @@ class ChooseLocationSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const CustomText(text: 'Your location'),
-                      CustomText(
-                        text: value.address,
-                        fontSize: 14,
+                      SizedBox(
+                        width: size.width - 200,
+                        child: CustomText(
+                          text: value.address,
+                          fontSize: 14,
+                          textOverflow: TextOverflow.clip,
+                        ),
                       )
                     ],
                   ),

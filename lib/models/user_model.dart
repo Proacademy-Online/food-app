@@ -1,18 +1,20 @@
 part of 'objects.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class UserModel {
-  late String uid;
+  String uid;
   @JsonKey(name: "phone")
-  late String phoneNo;
-  late String name;
-  late String email;
+  String phoneNo;
+  String name;
+  String email;
+  AddressModel? address;
 
   UserModel({
     required this.uid,
     required this.phoneNo,
     required this.name,
     required this.email,
+    this.address,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);

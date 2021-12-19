@@ -6,6 +6,20 @@ part of objects;
 // JsonSerializableGenerator
 // **************************************************************************
 
+CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
+    CategoryModel(
+      id: json['id'] as String,
+      svgName: json['svgName'] as String? ?? '',
+      categoryName: json['categoryName'] as String,
+    );
+
+Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'svgName': instance.svgName,
+      'categoryName': instance.categoryName,
+    };
+
 AddressModel _$AddressModelFromJson(Map<String, dynamic> json) => AddressModel(
       addressString: json['addressString'] as String,
       latitude: (json['latitude'] as num).toDouble(),
@@ -24,6 +38,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       phoneNo: json['phone'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
+      address: json['address'] == null
+          ? null
+          : AddressModel.fromJson(json['address'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -31,4 +48,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'phone': instance.phoneNo,
       'name': instance.name,
       'email': instance.email,
+      'address': instance.address?.toJson(),
     };

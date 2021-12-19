@@ -4,14 +4,9 @@ import 'package:food_app/providers/auth/registration_provider.dart';
 import 'package:food_app/providers/auth/user_provider.dart';
 import 'package:food_app/providers/counter_provider.dart';
 import 'package:food_app/providers/auth/login_provider.dart';
-import 'package:food_app/screens/main_screens/cart_screen/cart_screen.dart';
-import 'package:food_app/screens/main_screens/main_screen.dart';
 import 'package:food_app/screens/splash_screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'screens/main_screens/tracking_screen/tracking_screen.dart';
-import 'screens/sample_map.dart';
-import 'screens/state_management_example/screen_one.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

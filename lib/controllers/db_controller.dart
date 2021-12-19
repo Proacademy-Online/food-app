@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:food_app/models/user_model.dart';
+import 'package:food_app/models/objects.dart';
 import 'package:logger/logger.dart';
 
 class DatabaseController {
@@ -33,7 +33,7 @@ class DatabaseController {
     try {
       DocumentSnapshot snapshot = await users.doc(id).get();
       Logger().i(snapshot.data());
-      UserModel userModel = UserModel.fromMap(snapshot.data() as Map<String, dynamic>);
+      UserModel userModel = UserModel.fromJson(snapshot.data() as Map<String, dynamic>);
       Logger().d(userModel.name);
 
       return userModel;

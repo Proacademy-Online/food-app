@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_button.dart';
 import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/providers/auth/user_provider.dart';
+import 'package:food_app/screens/admin/add_product.dart';
 import 'package:food_app/screens/admin/add_restaurents.dart';
 import 'package:food_app/utils/util_functions.dart';
 import 'package:provider/provider.dart';
@@ -61,6 +62,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   UtilFunctions.navigateTo(context, const AddRestaurent());
                 },
                 text: 'add restaurent',
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomButton(
+                onTap: () {
+                  UtilFunctions.navigateTo(context, const AddProduct());
+                },
+                text: 'add product',
               )
             ],
           ),

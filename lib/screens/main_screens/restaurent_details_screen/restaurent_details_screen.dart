@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/components/app_bar_button.dart';
 import 'package:food_app/components/custom_images.dart';
+import 'package:food_app/components/custom_loader.dart';
 import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/components/custom_title.dart';
 import 'package:food_app/components/product_card.dart';
+import 'package:food_app/providers/home/product_provider.dart';
+import 'package:food_app/providers/home/restaurent_provider.dart';
 import 'package:food_app/screens/main_screens/restaurant_menu/restaurant_menu.dart';
 import 'package:food_app/screens/main_screens/restaurent_details_screen/restaurant_category_section.dart';
 import 'package:food_app/utils/app_colors.dart';
 import 'package:food_app/utils/util_functions.dart';
+import 'package:provider/provider.dart';
 
 class RestaurentDeailsScreen extends StatefulWidget {
   const RestaurentDeailsScreen({Key? key}) : super(key: key);
@@ -71,14 +75,22 @@ class ProductListSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.separated(
-        padding: const EdgeInsets.only(bottom: 20, top: 5),
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (context, index) {
-          return const ProductCard();
+      child: Consumer<ProductProvider>(
+        builder: (context, value, child) {
+          return value.isLoading
+              ? const CustomLoader()
+              : value.products.isEmpty
+                  ? const Center(child: CustomText(text: 'No porducts'))
+                  : ListView.separated(
+                      padding: const EdgeInsets.only(bottom: 20, top: 5),
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return ProductCard(model: value.minPproducts[index]);
+                      },
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemCount: value.minPproducts.length,
+                    );
         },
-        separatorBuilder: (context, index) => const Divider(),
-        itemCount: 3,
       ),
     );
   }
@@ -141,70 +153,74 @@ class RestaurentDetailsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Consumer<RestaurentProvider>(
+        builder: (context, value, child) {
+          return Column(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const CustomText(
-                    text: 'Westway',
-                    fontSize: 30,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.min,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.star,
-                            color: primaryColor,
-                            size: 15,
-                          ),
-                          CustomText(
-                            text: '4.6  • ',
-                            fontSize: 15,
-                          )
-                        ],
+                      CustomText(
+                        text: value.singleRes.resName,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w500,
                       ),
                       Row(
-                        children: const [
-                          Icon(
-                            Icons.timer,
-                            color: greyColor,
-                            size: 15,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.star,
+                                color: primaryColor,
+                                size: 15,
+                              ),
+                              CustomText(
+                                text: '${value.singleRes.avgRating}  • ',
+                                fontSize: 15,
+                              )
+                            ],
                           ),
-                          SizedBox(width: 3),
-                          CustomText(
-                            text: '15 min',
-                            fontSize: 15,
-                          )
+                          Row(
+                            children: const [
+                              Icon(
+                                Icons.timer,
+                                color: greyColor,
+                                size: 15,
+                              ),
+                              SizedBox(width: 3),
+                              CustomText(
+                                text: '15 min',
+                                fontSize: 15,
+                              )
+                            ],
+                          ),
                         ],
-                      ),
+                      )
                     ],
-                  )
+                  ),
+                  const CustomText(
+                    text: 'More info',
+                    fontSize: 14,
+                    color: korange,
+                  ),
                 ],
               ),
-              const CustomText(
-                text: 'More info',
-                fontSize: 14,
-                color: korange,
-              ),
+              const SizedBox(height: 10),
+              CustomText(
+                text: value.singleRes.about,
+                fontSize: 15,
+                color: greyColor,
+                textAlign: TextAlign.justify,
+                textOverflow: TextOverflow.clip,
+              )
             ],
-          ),
-          const SizedBox(height: 10),
-          const CustomText(
-            text:
-                'Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.',
-            fontSize: 15,
-            color: greyColor,
-            textAlign: TextAlign.justify,
-          )
-        ],
+          );
+        },
       ),
     );
   }
@@ -227,15 +243,18 @@ class UpperSection extends StatelessWidget {
           SizedBox(
             width: size.width,
             height: 320,
-            child: const ClipRRect(
-              borderRadius: BorderRadius.only(
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(65),
                 bottomRight: Radius.circular(65),
               ),
-              child: CustomNetworkImage(
-                url:
-                    'https://www.kitchensanctuary.com/wp-content/uploads/2020/12/Quick-Chicken-Ramen-square-FS-22.jpg',
-                fit: BoxFit.fill,
+              child: Consumer<RestaurentProvider>(
+                builder: (context, value, child) {
+                  return CustomNetworkImage(
+                    url: value.singleRes.img,
+                    fit: BoxFit.fill,
+                  );
+                },
               ),
             ),
           ),
@@ -245,7 +264,9 @@ class UpperSection extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppBarButton(ontap: () {}),
+                  AppBarButton(ontap: () {
+                    UtilFunctions.goBack(context);
+                  }),
                   Row(
                     children: [
                       AppBarButton(iconName: 'heart', ontap: () {}),

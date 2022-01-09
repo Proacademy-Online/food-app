@@ -8,11 +8,13 @@ class ImageTile extends StatelessWidget {
     this.isOffer = false,
     this.width = 120,
     this.height = 120,
+    this.imgUrl = 'https://www.kitchensanctuary.com/wp-content/uploads/2020/12/Quick-Chicken-Ramen-square-FS-22.jpg',
   }) : super(key: key);
 
   final bool isOffer;
   final double width;
   final double height;
+  final String imgUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +26,11 @@ class ImageTile extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: const CustomNetworkImage(
-              url:
-                  'https://www.kitchensanctuary.com/wp-content/uploads/2020/12/Quick-Chicken-Ramen-square-FS-22.jpg',
+            child: CustomNetworkImage(
+              url: imgUrl,
+              width: width,
+              height: height,
+              fit: BoxFit.fill,
             ),
           ),
           isOffer ? const OfferTag() : Container()

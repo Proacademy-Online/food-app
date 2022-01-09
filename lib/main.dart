@@ -5,6 +5,7 @@ import 'package:food_app/providers/auth/user_provider.dart';
 import 'package:food_app/providers/counter_provider.dart';
 import 'package:food_app/providers/auth/login_provider.dart';
 import 'package:food_app/providers/home/category_provider.dart';
+import 'package:food_app/providers/home/product_provider.dart';
 import 'package:food_app/providers/home/restaurent_provider.dart';
 import 'package:food_app/screens/splash_screen/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => CategoryProvider()),
         ChangeNotifierProvider(create: (context) => RestaurentProvider()),
+        ChangeNotifierProvider(create: (context) => ProductProvider()),
       ],
       child: const MyApp(),
     ),

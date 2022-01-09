@@ -1,35 +1,98 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_images.dart';
+import 'package:food_app/components/custom_loader.dart';
 import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/components/image_tile.dart';
+import 'package:food_app/models/restaurent_model.dart';
+import 'package:food_app/providers/home/product_provider.dart';
+import 'package:food_app/providers/home/restaurent_provider.dart';
 import 'package:food_app/screens/main_screens/restaurent_details_screen/restaurent_details_screen.dart';
 import 'package:food_app/utils/app_colors.dart';
 import 'package:food_app/utils/util_functions.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
-class NearestRestaurentsSection extends StatelessWidget {
+class NearestRestaurentsSection extends StatefulWidget {
   const NearestRestaurentsSection({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<NearestRestaurentsSection> createState() => _NearestRestaurentsSectionState();
+}
+
+class _NearestRestaurentsSectionState extends State<NearestRestaurentsSection> {
+  //stream
+  Stream<List<DocumentSnapshot>>? stream;
+
+//firestore instance
+  final _firestore = FirebaseFirestore.instance;
+
+  //geofire object
+  final geo = Geoflutterfire();
+
+  //radius ( distance)
+  // var radius = BehaviorSubject<double>.seeded(20.0);
+  double radius = 20;
+
+  List<RestaurentModel> _resList = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    //determinig the center point (your location coordinates)
+    final center = geo.point(latitude: 6.7106, longitude: 79.9074);
+    // get the collection reference or query
+    var collectionReference = _firestore.collection('restaurents');
+
+    stream = geo.collection(collectionRef: collectionReference).within(center: center, radius: radius, field: 'position', strictMode: true);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.only(left: 30),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        child: Row(
-          children: const [
-            RestaurentTile(
-              isOffer: true,
-            ),
-            RestaurentTile(),
-            RestaurentTile(),
-            RestaurentTile(),
-          ],
-        ),
-      ),
-    );
+        margin: const EdgeInsets.only(left: 30),
+        height: size.height / 5,
+        // color: Colors.black,
+        child: StreamBuilder(
+          stream: stream,
+          builder: (context, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
+            if (snapshot.hasError) {
+              return const CustomText(text: 'something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CustomLoader();
+            }
+
+            Logger().w(snapshot.data!.length);
+
+            //clear the list
+            _resList.clear();
+
+            for (var i = 0; i < snapshot.data!.length; i++) {
+              Map<String, dynamic> data = snapshot.data![i].data() as Map<String, dynamic>;
+              var model = RestaurentModel.fromJson(data);
+              _resList.add(model);
+            }
+
+            Logger().w(_resList.length);
+
+            return ListView.builder(
+              itemCount: _resList.length,
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                return RestaurentTile(model: _resList[index]);
+              },
+            );
+          },
+        ));
   }
 }
 
@@ -37,36 +100,49 @@ class RestaurentTile extends StatelessWidget {
   const RestaurentTile({
     Key? key,
     this.isOffer = false,
+    required this.model,
   }) : super(key: key);
 
   final bool isOffer;
+  final RestaurentModel model;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () =>
-          UtilFunctions.navigateTo(context, const RestaurentDeailsScreen()),
+      onTap: () {
+        //set the clicked single restaurent data
+        Provider.of<RestaurentProvider>(context, listen: false).setSingleRes(model);
+
+        //fetch the products of this restaurent by the restairent id
+        Provider.of<ProductProvider>(context, listen: false).fetctProductsByResId(model.resId);
+
+        //navigate to details screen
+        UtilFunctions.navigateTo(context, const RestaurentDeailsScreen());
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ImageTile(isOffer: isOffer),
+          ImageTile(
+            isOffer: isOffer,
+            imgUrl: model.img,
+          ),
           const SizedBox(height: 5),
-          const CustomText(
-            text: 'Westway',
+          CustomText(
+            text: model.resName,
             fontSize: 16,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
-                children: const [
-                  Icon(
+                children: [
+                  const Icon(
                     Icons.star,
                     color: primaryColor,
                     size: 15,
                   ),
                   CustomText(
-                    text: '4.6  • ',
+                    text: '${model.avgRating}  • ',
                     fontSize: 12,
                   )
                 ],

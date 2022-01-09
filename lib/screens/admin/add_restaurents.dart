@@ -1,14 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_button.dart';
-import 'package:food_app/components/custom_header.dart';
 import 'package:food_app/components/custom_images.dart';
 import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/components/custom_textfeild.dart';
-import 'package:food_app/providers/auth/registration_provider.dart';
 import 'package:food_app/providers/home/restaurent_provider.dart';
 import 'package:food_app/utils/global_data.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:logger/logger.dart';

@@ -6,6 +6,25 @@ part of objects;
 // JsonSerializableGenerator
 // **************************************************************************
 
+ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
+      resId: json['resId'] as String,
+      productId: json['productId'] as String,
+      productName: json['productName'] as String,
+      productPrice: (json['productPrice'] as num).toDouble(),
+      avgRating: (json['avgRating'] as num).toDouble(),
+      img: json['img'] as String,
+    );
+
+Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
+    <String, dynamic>{
+      'resId': instance.resId,
+      'productId': instance.productId,
+      'productName': instance.productName,
+      'productPrice': instance.productPrice,
+      'avgRating': instance.avgRating,
+      'img': instance.img,
+    };
+
 CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
     CategoryModel(
       id: json['id'] as String,

@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_dialogbox.dart';
 import 'package:food_app/controllers/res_controller.dart';
+import 'package:food_app/models/restaurent_model.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
@@ -117,5 +118,19 @@ class RestaurentProvider extends ChangeNotifier {
     } catch (e) {
       Logger().e(e);
     }
+  }
+
+  //////////////------------------restaurent details screen states
+
+  //defining single  restaurent model
+  late RestaurentModel _restaurentModel;
+
+  //getter for res model
+  RestaurentModel get singleRes => _restaurentModel;
+
+  //set the restaurent model
+  void setSingleRes(RestaurentModel model) {
+    _restaurentModel = model;
+    notifyListeners();
   }
 }

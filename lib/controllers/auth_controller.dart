@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:food_app/components/custom_dialogbox.dart';
 import 'package:food_app/controllers/db_controller.dart';
-import 'package:food_app/screens/main_screens/main_screen.dart';
-import 'package:food_app/utils/util_functions.dart';
 
 class AuthController {
   // Firebase auth instance created

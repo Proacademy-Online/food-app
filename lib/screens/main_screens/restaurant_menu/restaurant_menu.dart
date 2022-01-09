@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/components/app_bar_button.dart';
+import 'package:food_app/components/custom_loader.dart';
 import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/components/custom_title.dart';
 import 'package:food_app/components/product_card.dart';
+import 'package:food_app/providers/home/product_provider.dart';
 import 'package:food_app/screens/main_screens/restaurent_details_screen/restaurant_category_section.dart';
 import 'package:food_app/utils/app_colors.dart';
 import 'package:food_app/utils/util_functions.dart';
+import 'package:provider/provider.dart';
 
 class RestaurantMenu extends StatefulWidget {
   const RestaurantMenu({Key? key}) : super(key: key);
@@ -100,10 +103,20 @@ class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.separated(
-        itemCount: 6,
-        itemBuilder: (context, index) => const ProductCard(),
-        separatorBuilder: (context, index) => const Divider(),
+      child: Consumer<ProductProvider>(
+        builder: (context, value, child) {
+          return value.isLoading
+              ? const CustomLoader()
+              : ListView.separated(
+                  padding: const EdgeInsets.only(bottom: 20, top: 5),
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ProductCard(model: value.products[index]);
+                  },
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemCount: value.products.length,
+                );
+        },
       ),
     );
   }

@@ -2,11 +2,13 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/components/custom_images.dart';
 import 'package:food_app/components/custom_text.dart';
+import 'package:food_app/providers/home/bottom_nav_provider.dart';
 import 'package:food_app/screens/main_screens/cart_screen/cart_screen.dart';
 import 'package:food_app/screens/main_screens/home_screen/home_page.dart';
 import 'package:food_app/screens/main_screens/profile_screen/profile_screen.dart';
 import 'package:food_app/utils/app_colors.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'search_screen/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -17,7 +19,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
+  // int _currentIndex = 0;
 
   final List<Widget> _screens = const [
     HomePage(),
@@ -54,54 +56,50 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: initBackButton,
-      child: Scaffold(
-        backgroundColor: mainBG,
-        body: _screens.elementAt(_currentIndex),
-        bottomNavigationBar: Container(
-          height: 90,
-          color: kwhite,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              BottomNavTile(
-                icon: 'home',
-                isSelected: _currentIndex == 0,
-                ontap: () {
-                  setState(() {
-                    _currentIndex = 0;
-                  });
-                },
+      child: Consumer<BottomNavProvider>(
+        builder: (context, value, child) {
+          return Scaffold(
+            backgroundColor: mainBG,
+            body: _screens.elementAt(value.activeIndex),
+            bottomNavigationBar: Container(
+              height: 90,
+              color: kwhite,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  BottomNavTile(
+                    icon: 'home',
+                    isSelected: value.activeIndex == 0,
+                    ontap: () {
+                      value.onItemTapped(0);
+                    },
+                  ),
+                  BottomNavTile(
+                    icon: 'search',
+                    isSelected: value.activeIndex == 1,
+                    ontap: () {
+                      value.onItemTapped(1);
+                    },
+                  ),
+                  BottomNavTile(
+                    icon: 'cart',
+                    isSelected: value.activeIndex == 2,
+                    ontap: () {
+                      value.onItemTapped(2);
+                    },
+                  ),
+                  BottomNavTile(
+                    icon: 'profile',
+                    isSelected: value.activeIndex == 3,
+                    ontap: () {
+                      value.onItemTapped(3);
+                    },
+                  ),
+                ],
               ),
-              BottomNavTile(
-                icon: 'search',
-                isSelected: _currentIndex == 1,
-                ontap: () {
-                  setState(() {
-                    _currentIndex = 1;
-                  });
-                },
-              ),
-              BottomNavTile(
-                icon: 'cart',
-                isSelected: _currentIndex == 2,
-                ontap: () {
-                  setState(() {
-                    _currentIndex = 2;
-                  });
-                },
-              ),
-              BottomNavTile(
-                icon: 'profile',
-                isSelected: _currentIndex == 3,
-                ontap: () {
-                  setState(() {
-                    _currentIndex = 3;
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

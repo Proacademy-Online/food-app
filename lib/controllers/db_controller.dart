@@ -24,6 +24,7 @@ class DatabaseController {
           'phone': phone,
           'uid': uid,
           'address': null,
+          'cartItems': [],
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));

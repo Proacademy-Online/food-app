@@ -5,6 +5,7 @@ import 'package:food_app/components/custom_loader.dart';
 import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/components/image_tile.dart';
 import 'package:food_app/models/restaurent_model.dart';
+import 'package:food_app/providers/auth/user_provider.dart';
 import 'package:food_app/providers/home/product_provider.dart';
 import 'package:food_app/providers/home/restaurent_provider.dart';
 import 'package:food_app/screens/main_screens/restaurent_details_screen/restaurent_details_screen.dart';
@@ -40,59 +41,78 @@ class _NearestRestaurentsSectionState extends State<NearestRestaurentsSection> {
 
   List<RestaurentModel> _resList = [];
 
+  late GeoFirePoint center;
+
   @override
   void initState() {
     super.initState();
 
-    //determinig the center point (your location coordinates)
-    final center = geo.point(latitude: 6.7106, longitude: 79.9074);
-    // get the collection reference or query
-    var collectionReference = _firestore.collection('restaurents');
-
-    stream = geo.collection(collectionRef: collectionReference).within(center: center, radius: radius, field: 'position', strictMode: true);
+    // stream = geo.collection(collectionRef: collectionReference).within(center: center, radius: radius, field: 'position', strictMode: true);
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-        margin: const EdgeInsets.only(left: 30),
-        height: size.height / 5,
-        // color: Colors.black,
-        child: StreamBuilder(
-          stream: stream,
-          builder: (context, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
-            if (snapshot.hasError) {
-              return const CustomText(text: 'something went wrong');
-            }
+    return Consumer<UserProvider>(
+      builder: (context, value, child) {
+        // get the collection reference or query
+        var collectionReference = _firestore.collection('restaurents');
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CustomLoader();
-            }
+        if (value.userModel.address != null) {
+          //determinig the center point (your location coordinates)
+          center = geo.point(latitude: value.userModel.address!.latitude, longitude: value.userModel.address!.longitude);
+        }
 
-            Logger().w(snapshot.data!.length);
+        return Container(
+            margin: const EdgeInsets.only(left: 30),
+            height: size.height / 5,
+            // color: Colors.black,
+            child: value.userModel.address == null
+                ? const Center(
+                    child: CustomText(
+                    text: 'choose a delivery location \nto see the nearest restaurents',
+                    textAlign: TextAlign.center,
+                  ))
+                : StreamBuilder(
+                    stream: geo
+                        .collection(collectionRef: collectionReference)
+                        .within(center: center, radius: radius, field: 'position', strictMode: true),
+                    builder: (context, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
+                      if (snapshot.hasError) {
+                        return const CustomText(text: 'something went wrong');
+                      }
 
-            //clear the list
-            _resList.clear();
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CustomLoader();
+                      }
 
-            for (var i = 0; i < snapshot.data!.length; i++) {
-              Map<String, dynamic> data = snapshot.data![i].data() as Map<String, dynamic>;
-              var model = RestaurentModel.fromJson(data);
-              _resList.add(model);
-            }
+                      Logger().w(snapshot.data!.length);
 
-            Logger().w(_resList.length);
+                      //clear the list
+                      _resList.clear();
 
-            return ListView.builder(
-              itemCount: _resList.length,
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return RestaurentTile(model: _resList[index]);
-              },
-            );
-          },
-        ));
+                      for (var i = 0; i < snapshot.data!.length; i++) {
+                        Map<String, dynamic> data = snapshot.data![i].data() as Map<String, dynamic>;
+                        var model = RestaurentModel.fromJson(data);
+                        _resList.add(model);
+                      }
+
+                      Logger().w(_resList.length);
+
+                      return _resList.isEmpty
+                          ? const Center(child: CustomText(text: 'no nearest restaurents'))
+                          : ListView.builder(
+                              itemCount: _resList.length,
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return RestaurentTile(model: _resList[index]);
+                              },
+                            );
+                    },
+                  ));
+      },
+    );
   }
 }
 

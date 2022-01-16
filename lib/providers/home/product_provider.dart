@@ -122,7 +122,16 @@ class ProductProvider extends ChangeNotifier {
   List<ProductModel> get products => _products;
 
   //getter for single restaurent product list
-  List<ProductModel> get minPproducts => _minProductsList;
+  List<ProductModel> get minPproducts {
+    List<ProductModel> list = [];
+
+    for (var i = 0; i < _products.length; i++) {
+      list.add(_products[i]);
+      if (i == 2) break;
+    }
+
+    return list;
+  }
 
   //fetch products by the resturent id
   Future<void> fetctProductsByResId(String resid) async {
@@ -134,10 +143,10 @@ class ProductProvider extends ChangeNotifier {
       await _productController.getProducts(resid).then((value) {
         _products = value;
 
-        for (var i = 0; i < value.length; i++) {
-          _minProductsList.add(value[i]);
-          if (i == 2) break;
-        }
+        // for (var i = 0; i < value.length; i++) {
+        //   _minProductsList.add(value[i]);
+        //   if (i == 2) break;
+        // }
         Logger().w(_products.length);
         setLoading();
         notifyListeners();

@@ -6,6 +6,19 @@ part of objects;
 // JsonSerializableGenerator
 // **************************************************************************
 
+CartModel _$CartModelFromJson(Map<String, dynamic> json) => CartModel(
+      id: json['id'] as String,
+      amount: json['amount'] as int,
+      productModel:
+          ProductModel.fromJson(json['productModel'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$CartModelToJson(CartModel instance) => <String, dynamic>{
+      'id': instance.id,
+      'amount': instance.amount,
+      'productModel': instance.productModel.toJson(),
+    };
+
 ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       resId: json['resId'] as String,
       productId: json['productId'] as String,
@@ -60,6 +73,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       address: json['address'] == null
           ? null
           : AddressModel.fromJson(json['address'] as Map<String, dynamic>),
+      cartItems: (json['cartItems'] as List<dynamic>)
+          .map((e) => CartModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -68,4 +84,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'name': instance.name,
       'email': instance.email,
       'address': instance.address?.toJson(),
+      'cartItems': instance.cartItems.map((e) => e.toJson()).toList(),
     };

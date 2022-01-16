@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/components/image_tile.dart';
 import 'package:food_app/models/objects.dart';
+import 'package:food_app/providers/cart/cart_provider.dart';
 import 'package:food_app/utils/app_colors.dart';
+import 'package:provider/provider.dart';
 import 'custom_images.dart';
 import 'custom_text.dart';
 import 'dialog_helper.dart';
@@ -66,24 +68,20 @@ class ProductCard extends StatelessWidget {
               ),
             ],
           ),
-          GestureDetector(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return DialogHelper(
-                    iconName: 'shopping-cart 1',
-                    text1: 'Sucessfully \nadded to cart',
-                    btnName: 'Check out now',
-                    btnOntap: () {},
-                  );
+          Consumer<CartProvider>(
+            builder: (context, value, child) {
+              //check wether this product is already added to the cart
+              bool isAddedTocart = value.cartItems.any((e) => e.id == model.productId);
+              return GestureDetector(
+                onTap: () {
+                  value.addToCart(model, context);
                 },
+                child: Icon(
+                  isAddedTocart ? Icons.check : Icons.add,
+                  color: isAddedTocart ? kgreen : greyColor,
+                ),
               );
             },
-            child: const Icon(
-              Icons.add,
-              color: greyColor,
-            ),
           ),
         ],
       ),

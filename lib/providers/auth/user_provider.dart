@@ -2,11 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/controllers/db_controller.dart';
 import 'package:food_app/models/objects.dart';
+import 'package:food_app/providers/cart/cart_provider.dart';
 import 'package:food_app/screens/login_screen/login_screen.dart';
 import 'package:food_app/screens/main_screens/main_screen.dart';
 import 'package:food_app/utils/util_functions.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 class UserProvider extends ChangeNotifier {
   //database controller object
@@ -32,7 +34,7 @@ class UserProvider extends ChangeNotifier {
         UtilFunctions.navigateTo(context, const LoginPage());
       } else {
         Logger().i('User is signed in!');
-        await fetchSingleUser(user.uid);
+        await fetchSingleUser(context, user.uid);
         UtilFunctions.navigateTo(context, const MainScreen());
       }
     });
@@ -43,8 +45,11 @@ class UserProvider extends ChangeNotifier {
     // UtilFunctions.navigateTo(context, const LoginPage());
   }
 
-  Future<void> fetchSingleUser(String id) async {
+  Future<void> fetchSingleUser(BuildContext context, String id) async {
     _userModel = (await _databaseController.getUserData(id))!;
+
+    //set already added cart items when fetching userdata
+    Provider.of<CartProvider>(context, listen: false).setExistingCartItem(_userModel);
     notifyListeners();
   }
 

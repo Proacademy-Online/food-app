@@ -4,7 +4,10 @@ import 'package:food_app/components/custom_loader.dart';
 import 'package:food_app/components/custom_text.dart';
 import 'package:food_app/components/custom_title.dart';
 import 'package:food_app/components/product_card.dart';
+import 'package:food_app/providers/cart/cart_provider.dart';
+import 'package:food_app/providers/home/bottom_nav_provider.dart';
 import 'package:food_app/providers/home/product_provider.dart';
+import 'package:food_app/screens/main_screens/main_screen.dart';
 import 'package:food_app/screens/main_screens/restaurent_details_screen/restaurant_category_section.dart';
 import 'package:food_app/utils/app_colors.dart';
 import 'package:food_app/utils/util_functions.dart';
@@ -50,47 +53,57 @@ class FooterSection extends StatelessWidget {
       height: 73,
       color: Colors.green,
       child: Align(
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const CustomText(
-              text: '3 items',
-              color: kwhite,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-            Row(
-              children: [
-                const CustomText(
-                  text: 'View Cart',
-                  color: kwhite,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                ),
-                const SizedBox(width: 14),
-                Container(
-                  width: 80,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white24,
-                    borderRadius: BorderRadius.circular(12),
+          alignment: Alignment.center,
+          child: Consumer<CartProvider>(
+            builder: (context, value, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CustomText(
+                    text: '${value.cartTotalItemCount} items',
+                    color: kwhite,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
-                  child: const Center(
-                    child: CustomText(
-                      text: '\$ 20.49',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: kwhite,
-                    ),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Provider.of<BottomNavProvider>(context, listen: false).onItemTapped(2);
+                          UtilFunctions.navigateTo(context, const MainScreen());
+                        },
+                        child: const CustomText(
+                          text: 'View Cart',
+                          color: kwhite,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Container(
+                        // width: 80,
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white24,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                          child: CustomText(
+                            text: 'Rs. ${value.cartTotal}0',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: kwhite,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            // SizedBox(width: 14),
-          ],
-        ),
-      ),
+                  // SizedBox(width: 14),
+                ],
+              );
+            },
+          )),
     );
   }
 }

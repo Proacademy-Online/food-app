@@ -8,6 +8,7 @@ class UserModel {
   String name;
   String email;
   AddressModel? address;
+  List<CartModel> cartItems;
 
   UserModel({
     required this.uid,
@@ -15,6 +16,7 @@ class UserModel {
     required this.name,
     required this.email,
     this.address,
+    required this.cartItems,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);

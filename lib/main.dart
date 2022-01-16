@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/providers/auth/registration_provider.dart';
 import 'package:food_app/providers/auth/user_provider.dart';
+import 'package:food_app/providers/cart/cart_provider.dart';
 import 'package:food_app/providers/counter_provider.dart';
 import 'package:food_app/providers/auth/login_provider.dart';
+import 'package:food_app/providers/home/bottom_nav_provider.dart';
 import 'package:food_app/providers/home/category_provider.dart';
 import 'package:food_app/providers/home/product_provider.dart';
 import 'package:food_app/providers/home/restaurent_provider.dart';
@@ -24,6 +26,8 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => CategoryProvider()),
         ChangeNotifierProvider(create: (context) => RestaurentProvider()),
         ChangeNotifierProvider(create: (context) => ProductProvider()),
+        ChangeNotifierProvider(create: (context) => CartProvider()),
+        ChangeNotifierProvider(create: (context) => BottomNavProvider()),
       ],
       child: const MyApp(),
     ),
